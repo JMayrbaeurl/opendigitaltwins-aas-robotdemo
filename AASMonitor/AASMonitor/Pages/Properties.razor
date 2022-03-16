@@ -1,0 +1,50 @@
+﻿@page "/properties"
+
+<PageTitle>Properties</PageTitle>
+
+@using AASMonitor.Data
+@inject ADTAASRepoService ADTService
+
+<h1>Kuka Robot State monitor</h1>
+
+Showing values from Azure Digital Twins instance @ADTService.ADTEndpoint()
+
+<button onclick=@Countdown>Start</button>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Property name</th>
+                <th>Last value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var aProp in ADTAASRepoService.tagNames)
+            {
+                <tr>
+                    <td>@aProp</td>
+                    <td>@ADTService.LastValueFor(@aProp)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await ADTService.UpdateLatestValues();
+    }
+}
+
+@functions {  
+    void Countdown()  
+    {  
+        var timer = new Timer(TimeCallBack, null, 0, 3000);  
+    }  
+
+    void TimeCallBack(object state)  
+    {  
+        InvokeAsync(StateHasChanged);  
+    }  
+}  
+
