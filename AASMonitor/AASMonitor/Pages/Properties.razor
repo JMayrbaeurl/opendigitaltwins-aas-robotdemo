@@ -9,42 +9,49 @@
 
 Showing values from Azure Digital Twins instance @ADTService.ADTEndpoint()
 
-<button onclick=@Countdown>Start</button>
+<p>Current count: @currentCount (latest update from @DateTime.Now)</p>
 
-    <table class="table">
-        <thead>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Property name</th>
+            <th>Last value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var aProp in ADTAASRepoService.tagNames)
+        {
             <tr>
-                <th>Property name</th>
-                <th>Last value</th>
+                <td>@aProp</td>
+                <td>@ADTService.LastValueFor(@aProp)</td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var aProp in ADTAASRepoService.tagNames)
-            {
-                <tr>
-                    <td>@aProp</td>
-                    <td>@ADTService.LastValueFor(@aProp)</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        }
+    </tbody>
+</table>
 
 @code {
+    private int currentCount = 0;
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
     protected override async Task OnInitializedAsync()
     {
+        base.OnInitialized();
+
         await ADTService.UpdateLatestValues();
+
+        var timer = new System.Threading.Timer((_) =>
+        {
+            InvokeAsync( async ()  =>
+            {
+               // Add your update logic here
+               IncrementCount();
+               // Update the UI
+               StateHasChanged();
+            });
+        }, null, 0, 2000);
     }
 }
-
-@functions {  
-    void Countdown()  
-    {  
-        var timer = new Timer(TimeCallBack, null, 0, 3000);  
-    }  
-
-    void TimeCallBack(object state)  
-    {  
-        InvokeAsync(StateHasChanged);  
-    }  
-}  
 
