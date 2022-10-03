@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+AASMonitor/AASMonitor/Properties/ServiceDependencies/kukaaasmonitor - FTP/profile.arm.json
+.gitignore
+AASMonitor/AASMonitor/Properties/ServiceDependencies/kukaaasmonitor - Web Deploy/profile.arm.json
+AASMonitor/AASMonitor/Properties/ServiceDependencies/kukaaasmonitor - Zip Deploy1/profile.arm.json
+AASMonitor/AASMonitor/Properties/ServiceDependencies/kukaaasmonitor - Zip Deploy/profile.arm.json

@@ -1,0 +1,21 @@
+{
+    "administration": {
+        "version": "1.0",
+        "revision": "1",
+        "$metadata" : {}
+    },
+    "id": "http://spsdemo.sample.microsoft.com/aas/Kuka_KR3_540_Agilus",
+    "displayName": {
+        "langString": {
+            "EN": "Kuka robot 1", "DE": "Kuka Roboter"
+        },
+        "$metadata": {}
+    },
+    "description": {
+        "$metadata": {}
+    },
+    "tags": {
+        "$metadata": {}
+    },
+    "idShort": "ID_Kuka_KR3_540_Agilus"
+}
