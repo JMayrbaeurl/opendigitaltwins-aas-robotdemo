@@ -54,8 +54,9 @@ param applicationName string = 'tttech-apps-${uniqueString(resourceGroup().id)}'
 @minLength(2)
 param webAppName string = 'adt-mapper-${uniqueString(resourceGroup().id)}'
 
-@description('The Runtime stack of current web app')
-param linuxFxVersion string = 'DOCKER|tttechdemo.azurecr.io/nervedemo-adt-mapper:latest'
+param dockerServer string = 'tttechdemo.azurecr.io'
+param dockerImage string = 'nervedemo-adt-mapper:latest'
+var linuxFxVersion = 'DOCKER|${dockerServer}/${dockerImage}'
 
 var storageAccountName = '${uniqueString(resourceGroup().id)}functions'
 
@@ -132,11 +133,49 @@ resource appsettings 'Microsoft.Web/sites/config@2022-03-01' = {
   name: 'appsettings'
   properties: {
     AzureWebJobsStorage: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(storageAccount.id, '2021-09-01').keys[0].value}'
-    FUNCTIONS_EXTENSION_VERSION: '~3'
+    FUNCTIONS_WORKER_RUNTIME: 'dotnet'
+    FUNCTIONS_EXTENSION_VERSION: '~4'
     ADT_SERVICE_URL: 'https://${digitalTwins.properties.hostName}'
     ftpsState: 'Disabled'
     minTlsVersion: '1.2'
+    //AzureWebJobs.ProcessDTUpdatetoTSI.Disabled: 1
+    DOCKER_REGISTRY_SERVER_URL: 'https://${dockerServer}'
+    APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
   }
+}
+
+resource logs 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
+  name: 'logs-${uniqueString(resourceGroup().id)}'
+  location: location
+  properties: {
+    sku: {
+      name: 'PerGB2018'
+    }
+  }
+  tags: {
+    WorkloadName: tag_WorkloadName
+    DataClassification: tag_DataClassification
+    Criticality: tag_Criticality
+    ApplicationName: tag_ApplicationName
+    Env: tag_Env
+  }
+}
+
+resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
+  kind: 'web'
+  location: location
+  name: 'appins-${uniqueString(resourceGroup().id)}'
+  properties: {
+    WorkspaceResourceId: logs.id
+    Application_Type: 'web'
+  }
+  tags: {
+    WorkloadName: tag_WorkloadName
+    DataClassification: tag_DataClassification
+    Criticality: tag_Criticality
+    ApplicationName: tag_ApplicationName
+    Env: tag_Env
+  } 
 }
 
 // Azure RBAC Guid Source: https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
