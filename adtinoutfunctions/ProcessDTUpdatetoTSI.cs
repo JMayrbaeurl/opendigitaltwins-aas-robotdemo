@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
-using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Globalization;
+using Azure.Messaging.EventHubs;
 
 namespace SampleFunctionsApp
 {
@@ -28,7 +28,7 @@ namespace SampleFunctionsApp
             string twinID = myEventHubMessage.Properties["cloudEvents:subject"].ToString();
             if (twins.IndexOf(twinID) != -1)
             {
-                JObject message = (JObject)JsonConvert.DeserializeObject(Encoding.UTF8.GetString(myEventHubMessage.Body));
+                JObject message = (JObject)JsonConvert.DeserializeObject(Encoding.UTF8.GetString(myEventHubMessage.EventBody));
                 log.LogInformation($"Reading event: {message}");
 
                 // Read values that are replaced or added

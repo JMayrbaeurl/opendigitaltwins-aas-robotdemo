@@ -1,0 +1,18 @@
+{
+  "displayName": {
+    "$metadata": {}
+  },
+  "description": {
+    "$metadata": {}
+  },
+  "idShort": "MachinePause",
+  "tags": {
+    "$metadata": {}
+  },
+  "kind": {
+    "kind": "Instance",
+    "$metadata": {}
+  },
+  "valueType": "Boolean",
+  "value": "false"
+}

@@ -1,0 +1,18 @@
+{
+    "administration": {
+        "version": "1.0",
+        "revision": "1",
+        "$metadata" : {}
+    },
+    "displayName": {
+        "$metadata": {}
+    },
+    "description": {
+        "$metadata": {}
+    },
+    "tags": {
+        "$metadata": {}
+    },
+    "idShort": "OperationalData",
+    "kind": { "kind": "Instance", "$metadata": {}}
+}

@@ -1,7 +1,8 @@
 {
-  "IsEncrypted": "false",
+  "IsEncrypted": false,
   "Values": {
-    "ADT_SERVICE_URL": "https://hack2021aasadt.api.weu.digitaltwins.azure.net",
+    "ADT_SERVICE_URL": "https://digitalTwins-32tsq7s6gfcpw.api.weu.digitaltwins.azure.net",
+    "InputMessageFormat": "NerveGateway",
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
     "EventHubAppSetting-Twins": "Endpoint=sb://adtaasdemoevhub.servicebus.windows.net/;SharedAccessKeyName=adtaasdemotwinshub;SharedAccessKey=awXsESU/ImhMpLyW2c6aqvdOLtdi49WTgxkTKkP5ZjY=;EntityPath=adtaasdemotwinshub",

@@ -1,0 +1,21 @@
+{
+    "administration": {
+        "version": "1.0",
+        "revision": "1",
+        "$metadata" : {}
+    },
+    "id": "http://demo.tttech.com/aas/nervedemocncmachine",
+    "displayName": {
+        "langString": {
+            "EN": "Nerve Demo CNC machine"
+        },
+        "$metadata": {}
+    },
+    "description": {
+        "$metadata": {}
+    },
+    "tags": {
+        "$metadata": {}
+    },
+    "idShort": "nerve-demo-cnc-machine"
+}

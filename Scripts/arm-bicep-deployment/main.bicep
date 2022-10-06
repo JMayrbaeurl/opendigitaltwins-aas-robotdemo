@@ -1,6 +1,8 @@
 @description('Location of all resources')
 param location string = resourceGroup().location
 
+param principalId string
+
 @description('Name given to Digital Twins resource')
 param digitalTwinsName string = 'digitalTwins-${uniqueString(resourceGroup().id)}'
 
@@ -402,5 +404,16 @@ resource dashboard 'Microsoft.Dashboard/grafana@2022-08-01' = {
     Criticality: tag_Criticality
     ApplicationName: tag_ApplicationName
     Env: tag_Env
+  }
+}
+
+// Assigns Digital Twins resource data owner of event hub
+resource grafanaEditorRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
+  name: guid(dashboard.id, 'grafEditor', 'a79a5197-3a5c-4973-a920-486035ffd60f')
+  scope: dashboard
+  properties: {
+    principalId: principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a79a5197-3a5c-4973-a920-486035ffd60f')
+    principalType: 'User'
   }
 }
