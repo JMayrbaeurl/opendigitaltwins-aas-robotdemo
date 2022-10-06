@@ -9,4 +9,4 @@ $dtName=$(az dt list -g tttech-nervedemo-rg --query '[0].{Name:name}' | ConvertF
 .\createADTGraph.ps1 -rg $rg -dtName $dtName.Name
 
 Write-Output 'Now registering IoT Hub device'
-Write-Output '- Sorry not implemented yet'
+.\registerIoTHubDevice.ps1 -rg $rg
