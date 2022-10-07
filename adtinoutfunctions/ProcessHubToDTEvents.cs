@@ -21,6 +21,7 @@ namespace SampleFunctionsApp
     {
         private static readonly HttpClient httpClient = new HttpClient();
         private static string adtServiceUrl = Environment.GetEnvironmentVariable("ADT_SERVICE_URL");
+        private static string adtTenantId = Environment.GetEnvironmentVariable("ADT_TENANT_ID");
 
         enum InputMessageFormat {
             OPC_UA, NerveGateway
@@ -114,8 +115,7 @@ namespace SampleFunctionsApp
             var credentials = new ChainedTokenCredential(
                         new EnvironmentCredential(),
                         new ManagedIdentityCredential(),
-                        new AzureCliCredential(new AzureCliCredentialOptions() { TenantId = "16b3c013-d300-468d-ac64-7eda0820b6d3" }),
-                        new InteractiveBrowserCredential(new InteractiveBrowserCredentialOptions() { TenantId = "16b3c013-d300-468d-ac64-7eda0820b6d3" }));
+                        new AzureCliCredential(new AzureCliCredentialOptions() { TenantId = adtTenantId }));
 
             DigitalTwinsClient client = new DigitalTwinsClient(new Uri(adtServiceUrl),
                 credentials, new DigitalTwinsClientOptions { Transport = new HttpClientTransport(httpClient) });
@@ -142,7 +142,10 @@ namespace SampleFunctionsApp
                         doUpdateTwinPropertyWithValue(client, payload.Variables.MachinePause.ToString(), "MachinePause", log);
                         doUpdateTwinPropertyWithValue(client, payload.Variables.MachineStarted.ToString(), "MachineStarted", log);
                         doUpdateTwinPropertyWithValue(client, payload.Variables.MeasuredDiameter.ToString(), "MeasuredDiameter", log);
-                        // TODO Others
+                        doUpdateTwinPropertyWithValue(client, payload.Variables.MeasuredHoleDiameter.ToString(), "MeasuredHoleDiameter", log);
+                        doUpdateTwinPropertyWithValue(client, payload.Variables.MeasuredLength.ToString(), "MeasuredLength", log);
+                        doUpdateTwinPropertyWithValue(client, payload.Variables.SerialNumber.ToString(), "SerialNumber", log);
+                        doUpdateTwinPropertyWithValue(client, payload.Variables.SpindlePower.ToString(), "SpindlePower", log);
                     }
                 }
             }
