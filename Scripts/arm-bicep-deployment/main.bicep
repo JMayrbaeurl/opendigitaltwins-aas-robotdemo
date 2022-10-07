@@ -66,7 +66,7 @@ var storageAccountName = '${uniqueString(resourceGroup().id)}functions'
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   name: storageAccountName
   location: location
-  kind: 'Storage'
+  kind: 'StorageV2'
   sku: {
     name: 'Standard_LRS'
   }
@@ -110,6 +110,20 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
       linuxFxVersion: linuxFxVersion
       minTlsVersion: '1.2'
       ftpsState: 'FtpsOnly'
+      appSettings: [
+        {
+          name:'FUNCTIONS_WORKER_RUNTIME'
+          value:'dotnet'
+        }
+        {
+          name:'FUNCTIONS_EXTENSION_VERSION'
+          value:'~4'
+        }
+        {
+          name: 'WEBSITES_ENABLE_APP_SERVICE_STORAGE'
+          value: 'false'
+        }
+      ]
     }
   }
   identity: {
@@ -122,6 +136,9 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
     ApplicationName: tag_ApplicationName
     Env: tag_Env
   }
+  dependsOn: [
+    storageAccount
+  ]
 }
 
 resource appsettings 'Microsoft.Web/sites/config@2022-03-01' = {
@@ -131,6 +148,7 @@ resource appsettings 'Microsoft.Web/sites/config@2022-03-01' = {
     AzureWebJobsStorage: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(storageAccount.id, '2021-09-01').keys[0].value}'
     FUNCTIONS_WORKER_RUNTIME: 'dotnet'
     FUNCTIONS_EXTENSION_VERSION: '~4'
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE: 'false'
     ADT_SERVICE_URL: 'https://${digitalTwins.properties.hostName}'
     ftpsState: 'Disabled'
     minTlsVersion: '1.2'
@@ -211,6 +229,9 @@ resource eventSubscription 'Microsoft.EventGrid/systemTopics/eventSubscriptions@
       enableAdvancedFilteringOnArrays: true
     }
   }
+  dependsOn:[
+    adxCluster
+  ]
 }
 
 // Creates Digital Twins instance
