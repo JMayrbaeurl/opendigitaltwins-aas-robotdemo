@@ -1,0 +1,18 @@
+{
+  "displayName": {
+    "$metadata": {}
+  },
+  "description": {
+    "$metadata": {}
+  },
+  "idShort": "MeasuredLength",
+  "tags": {
+    "$metadata": {}
+  },
+  "kind": {
+    "kind": "Instance",
+    "$metadata": {}
+  },
+  "valueType": "Double",
+  "value": "0.0"
+}

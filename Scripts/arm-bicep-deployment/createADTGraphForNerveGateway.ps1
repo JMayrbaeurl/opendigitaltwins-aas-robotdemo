@@ -55,3 +55,31 @@ az dt twin create -n $dtName --dtmi "dtmi:digitaltwins:aas:Property;1"`
 az dt twin relationship create -n $dtName --kind "submodelElement"`
  --relationship-id "NerveDemoCNCMachineOpsdata-submodelElement-MeasuredDiameter"`
  --source "NerveDemoCNCMachineOpsdata" --target "MeasuredDiameter" -g $rg
+
+az dt twin create -n $dtName --dtmi "dtmi:digitaltwins:aas:Property;1"`
+ --twin-id MeasuredHoleDiameter --properties ".\graph\NerveDemoCNCMachinePropMeasuredHoleDiameter.json" -g $rg
+
+az dt twin relationship create -n $dtName --kind "submodelElement"`
+ --relationship-id "NerveDemoCNCMachineOpsdata-submodelElement-MeasuredHoleDiameter"`
+ --source "NerveDemoCNCMachineOpsdata" --target "MeasuredHoleDiameter" -g $rg
+
+az dt twin create -n $dtName --dtmi "dtmi:digitaltwins:aas:Property;1"`
+ --twin-id MeasuredLength --properties ".\graph\NerveDemoCNCMachinePropMeasuredLength.json" -g $rg
+
+az dt twin relationship create -n $dtName --kind "submodelElement"`
+ --relationship-id "NerveDemoCNCMachineOpsdata-submodelElement-MeasuredLength"`
+ --source "NerveDemoCNCMachineOpsdata" --target "MeasuredLength" -g $rg
+
+az dt twin create -n $dtName --dtmi "dtmi:digitaltwins:aas:Property;1"`
+ --twin-id SerialNumber --properties ".\graph\NerveDemoCNCMachinePropSerialNumber.json" -g $rg
+
+az dt twin relationship create -n $dtName --kind "submodelElement"`
+ --relationship-id "NerveDemoCNCMachineOpsdata-submodelElement-SerialNumber"`
+ --source "NerveDemoCNCMachineOpsdata" --target "SerialNumber" -g $rg
+
+az dt twin create -n $dtName --dtmi "dtmi:digitaltwins:aas:Property;1"`
+ --twin-id SpindlePower --properties ".\graph\NerveDemoCNCMachinePropSpindlePower.json" -g $rg
+
+az dt twin relationship create -n $dtName --kind "submodelElement"`
+ --relationship-id "NerveDemoCNCMachineOpsdata-submodelElement-SpindlePower"`
+ --source "NerveDemoCNCMachineOpsdata" --target "SpindlePower" -g $rg
