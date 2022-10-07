@@ -2,6 +2,7 @@
 param location string = resourceGroup().location
 
 param principalId string
+param inputMsgFormat string
 
 @description('Name given to Digital Twins resource')
 param digitalTwinsName string = 'digitalTwins-${uniqueString(resourceGroup().id)}'
@@ -57,7 +58,7 @@ param applicationName string = 'tttech-apps-${uniqueString(resourceGroup().id)}'
 param webAppName string = 'adt-mapper-${uniqueString(resourceGroup().id)}'
 
 param dockerServer string = 'tttechdemo.azurecr.io'
-param dockerImage string = 'nervedemo-adt-mapper:latest'
+param dockerImage string = 'nervedemofuncs:latest'
 var linuxFxVersion = 'DOCKER|${dockerServer}/${dockerImage}'
 
 var storageAccountName = '${uniqueString(resourceGroup().id)}functions'
@@ -123,13 +124,6 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
   }
 }
 
-/*
-resource funcProcessHubToDTEvents 'Microsoft.Web/sites/functions@2022-03-01' = {
-  name: 'ProcessHubToDTEvents'
-  parent: webApp
-}
-*/
-
 resource appsettings 'Microsoft.Web/sites/config@2022-03-01' = {
   parent: webApp
   name: 'appsettings'
@@ -142,7 +136,9 @@ resource appsettings 'Microsoft.Web/sites/config@2022-03-01' = {
     minTlsVersion: '1.2'
     //AzureWebJobs.ProcessDTUpdatetoTSI.Disabled: 1
     DOCKER_REGISTRY_SERVER_URL: 'https://${dockerServer}'
+    DOCKER_CUSTOM_IMAGE_NAME: dockerImage
     APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
+    InputMessageFormat: inputMsgFormat
   }
 }
 
@@ -195,14 +191,14 @@ resource givenIdToDigitalTwinsRoleAssignment 'Microsoft.Authorization/roleAssign
     principalType: 'ServicePrincipal'
   }
 }
-/*
+
 resource eventSubscription 'Microsoft.EventGrid/systemTopics/eventSubscriptions@2021-12-01' = {
   parent: ADTSystemTopic
   name: 'eventSubscription-${uniqueString(resourceGroup().id)}'
   properties: {
     destination: {
       properties: {
-        resourceId: '${webApp.id}/${funcProcessHubToDTEvents.name}'
+        resourceId: '${webApp.id}/ProcessHubToDTEvents'
         maxEventsPerBatch: 1
         preferredBatchSizeInKilobytes: 64
       }
@@ -216,7 +212,7 @@ resource eventSubscription 'Microsoft.EventGrid/systemTopics/eventSubscriptions@
     }
   }
 }
-*/
+
 // Creates Digital Twins instance
 resource digitalTwins 'Microsoft.DigitalTwins/digitalTwinsInstances@2022-05-31' = {
   name: digitalTwinsName
