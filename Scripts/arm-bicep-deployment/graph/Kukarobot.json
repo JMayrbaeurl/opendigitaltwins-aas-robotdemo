@@ -17,5 +17,10 @@
     "tags": {
         "$metadata": {}
     },
-    "idShort": "ID_Kuka_KR3_540_Agilus"
+    "idShort": "ID_Kuka_KR3_540_Agilus",
+    "assetInformationShort": {
+        "assetKind": "Instance",
+        "globalAssetId": "http://nerve.tttech.com/aas/Kuka_KR3_540_Agilus",
+        "$metadata": {}
+    }
 }

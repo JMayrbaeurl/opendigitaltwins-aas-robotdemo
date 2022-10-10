@@ -216,7 +216,7 @@ resource eventSubscription 'Microsoft.EventGrid/systemTopics/eventSubscriptions@
   properties: {
     destination: {
       properties: {
-        resourceId: '${webApp.id}/ProcessHubToDTEvents'
+        resourceId: '${webApp.id}/functions/ProcessHubToDTEvents'
         maxEventsPerBatch: 1
         preferredBatchSizeInKilobytes: 64
       }

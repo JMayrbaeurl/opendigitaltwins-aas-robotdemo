@@ -17,5 +17,10 @@
     "tags": {
         "$metadata": {}
     },
-    "idShort": "nerve-demo-cnc-machine"
+    "idShort": "nerve-demo-cnc-machine",
+    "assetInformationShort": {
+        "assetKind": "Instance",
+        "globalAssetId": "http://nerve.tttech.com/aas/nervedemocncmachine",
+        "$metadata": {}
+    }
 }
