@@ -19,7 +19,7 @@ namespace SampleFunctionsApp
             "ActualKarthPositon_X", "ActualKarthPositon_Y", "ActualKarthPositon_Z",
             "ActualKarthPositon_A", "ActualKarthPositon_B", "ActualKarthPositon_C"};
 
-        [FunctionName("ProcessDTUpdatetoTSI")]
+        //[FunctionName("ProcessDTUpdatetoTSI")]
         public static async Task Run(
             [EventHubTrigger("twins-event-hub", Connection = "EventHubAppSetting-Twins")] EventData myEventHubMessage,
             [EventHub("tsi-event-hub", Connection = "EventHubAppSetting-TSI")] IAsyncCollector<string> outputEvents,

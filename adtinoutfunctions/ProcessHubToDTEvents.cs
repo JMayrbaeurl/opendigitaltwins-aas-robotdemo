@@ -129,23 +129,43 @@ namespace SampleFunctionsApp
             if (msgArray != null && msgArray.Length > 0)
             {
                 JObject fullmsg = JObject.Parse(msgArray);
-                JToken eventToken = fullmsg["body"]["event"];
-                NerveGWEvent eventMsg = eventToken.ToObject<NerveGWEvent>();
-                if (eventMsg != null)
-                {
-                    NerveGWEventPayload payload = JsonConvert.DeserializeObject<NerveGWEventPayload>(eventMsg.Payload);
-                    if (payload != null)
-                    {
-                        DigitalTwinsClient client = CreateADTClient(log);
+                JToken bodyToken = fullmsg["body"];
 
-                        doUpdateTwinPropertyWithValue(client, payload.Variables.MachineError.ToString(), "MachineError", log);
-                        doUpdateTwinPropertyWithValue(client, payload.Variables.MachinePause.ToString(), "MachinePause", log);
-                        doUpdateTwinPropertyWithValue(client, payload.Variables.MachineStarted.ToString(), "MachineStarted", log);
-                        doUpdateTwinPropertyWithValue(client, payload.Variables.MeasuredDiameter.ToString(), "MeasuredDiameter", log);
-                        doUpdateTwinPropertyWithValue(client, payload.Variables.MeasuredHoleDiameter.ToString(), "MeasuredHoleDiameter", log);
-                        doUpdateTwinPropertyWithValue(client, payload.Variables.MeasuredLength.ToString(), "MeasuredLength", log);
-                        doUpdateTwinPropertyWithValue(client, payload.Variables.SerialNumber.ToString(), "SerialNumber", log);
-                        doUpdateTwinPropertyWithValue(client, payload.Variables.SpindlePower.ToString(), "SpindlePower", log);
+                if (bodyToken != null) {
+                    JToken eventToken = null;
+
+                    try { 
+                    if (bodyToken.Type == JTokenType.String) {
+                        // Looks like base64 decoded
+                        // log.LogError($"encoded: {bodyToken.Value<string>()}");
+                        byte[] data = Convert.FromBase64String(bodyToken.Value<string>());
+                        string decodedString = Encoding.UTF8.GetString(data);
+                        // log.LogError($"decoded: {decodedString}");
+                        eventToken = (JsonConvert.DeserializeObject<JObject>(decodedString))["event"];
+                    } else
+                        eventToken = fullmsg["body"]["event"];
+                    } catch (Exception ex)
+                    {
+                        log.LogError($"Error parsing msg '${bodyToken.Value<string>()}' : ${ex.Message}");
+                    }
+
+                    NerveGWEvent eventMsg = eventToken?.ToObject<NerveGWEvent>();
+                    if (eventMsg != null)
+                    {
+                        NerveGWEventPayload payload = JsonConvert.DeserializeObject<NerveGWEventPayload>(eventMsg.Payload);
+                        if (payload != null)
+                        {
+                            DigitalTwinsClient client = CreateADTClient(log);
+
+                            doUpdateTwinPropertyWithValue(client, payload.Variables.MachineError.ToString(), "MachineError", log);
+                            doUpdateTwinPropertyWithValue(client, payload.Variables.MachinePause.ToString(), "MachinePause", log);
+                            doUpdateTwinPropertyWithValue(client, payload.Variables.MachineStarted.ToString(), "MachineStarted", log);
+                            doUpdateTwinPropertyWithValue(client, payload.Variables.MeasuredDiameter.ToString(), "MeasuredDiameter", log);
+                            doUpdateTwinPropertyWithValue(client, payload.Variables.MeasuredHoleDiameter.ToString(), "MeasuredHoleDiameter", log);
+                            doUpdateTwinPropertyWithValue(client, payload.Variables.MeasuredLength.ToString(), "MeasuredLength", log);
+                            doUpdateTwinPropertyWithValue(client, payload.Variables.SerialNumber.ToString(), "SerialNumber", log);
+                            doUpdateTwinPropertyWithValue(client, payload.Variables.SpindlePower.ToString(), "SpindlePower", log);
+                        }
                     }
                 }
             }

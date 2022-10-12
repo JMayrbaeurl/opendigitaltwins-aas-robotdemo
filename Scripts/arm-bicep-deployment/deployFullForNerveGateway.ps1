@@ -12,5 +12,8 @@ Write-Output 'Now setting up the Digital Twin instance'
 $dtName=$(az dt list -g $rg --query '[0].{Name:name}' | ConvertFrom-Json)
 .\createADTGraphForNerveGateway.ps1 -rg $rg -dtName $dtName.Name
 
+Write-Output 'Activating Event subscription for ADT Updates'
+.\createEventGridSubscription.ps1 -rg $rg
+
 Write-Output 'Now registering IoT Hub device'
 .\registerIoTHubDevice.ps1 -rg $rg -deviceId $deviceId

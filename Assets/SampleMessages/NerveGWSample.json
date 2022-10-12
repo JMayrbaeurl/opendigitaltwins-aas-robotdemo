@@ -1,6 +1,6 @@
 {
     "variables": {
-        "MachineError ": false,
+        "MachineError": false,
         "MachinePause": false,
         "MachineStarted": true,
         "MeasuredDiameter": 22.095077514648438,

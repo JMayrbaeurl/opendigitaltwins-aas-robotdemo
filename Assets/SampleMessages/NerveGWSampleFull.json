@@ -1,0 +1,9 @@
+{
+  "event": {
+    "origin": "nerve-demo-cnc-machine",
+    "module": "",
+    "interface": "",
+    "component": "",
+    "payload": "{\"variables\":{\"MachineError\":false,\"MachinePause\":false,\"MachineStarted\":true,\"MeasuredDiameter\":22.095077514648438,\"MeasuredHoleDiameter\":12.309970855712891,\"MeasuredLength\":100.41339111328125,\"SerialNumber\":1902705,\"SpindlePower\":50}}"
+  }
+}

@@ -210,6 +210,7 @@ resource givenIdToDigitalTwinsRoleAssignment 'Microsoft.Authorization/roleAssign
   }
 }
 
+/*
 resource eventSubscription 'Microsoft.EventGrid/systemTopics/eventSubscriptions@2021-12-01' = {
   parent: ADTSystemTopic
   name: 'eventSubscription-${uniqueString(resourceGroup().id)}'
@@ -233,6 +234,7 @@ resource eventSubscription 'Microsoft.EventGrid/systemTopics/eventSubscriptions@
     adxCluster
   ]
 }
+*/
 
 // Creates Digital Twins instance
 resource digitalTwins 'Microsoft.DigitalTwins/digitalTwinsInstances@2022-05-31' = {
