@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 Console.WriteLine("Hello, World!");
 
-string deviceKey = "<deviceKey>";
+string deviceKey = "Y4lXfZ2j5Lm5yslQSA34WsgTL3R1pWQ03wUSj8W5USw=";
 string deviceId = "NerveGateway";
 string iotHubHostName = "iothub32tsq7s6gfcpw.azure-devices.net";
 var deviceAuthentication = new DeviceAuthenticationWithRegistrySymmetricKey(deviceId, deviceKey);
@@ -19,7 +19,8 @@ DeviceClient deviceClient = DeviceClient.Create(iotHubHostName, deviceAuthentica
         Origin = "nerve-demo-cnc-machine", Module = "", Interface = "", Component = "",
         Payload = "{\"variables\":{\"MachineError\":false,\"MachinePause\":false,\"MachineStarted\":true,\"MeasuredDiameter\":22.095077514648438,\"MeasuredHoleDiameter\":12.309970855712891,\"MeasuredLength\":100.41339111328125,\"SerialNumber\":1902705,\"SpindlePower\":30}}"
     };
-    messageString = JsonConvert.SerializeObject(new PayloadMsg() { Event = eventMsg});
+    //messageString = JsonConvert.SerializeObject(new PayloadMsg() { Event = eventMsg});
+    messageString = eventMsg.Payload; // Just send payload
     Message message = new Message(Encoding.UTF8.GetBytes(messageString)){
         ContentEncoding = Encoding.UTF8.ToString(),
         ContentType = "application/json"

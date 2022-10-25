@@ -110,6 +110,7 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
       linuxFxVersion: linuxFxVersion
       minTlsVersion: '1.2'
       ftpsState: 'FtpsOnly'
+      alwaysOn: true
       appSettings: [
         {
           name:'FUNCTIONS_WORKER_RUNTIME'

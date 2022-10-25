@@ -132,7 +132,7 @@ namespace SampleFunctionsApp
                 JToken bodyToken = fullmsg["body"];
 
                 if (bodyToken != null) {
-                    JToken eventToken = null;
+                    JToken payloadToken = null;
 
                     try { 
                     if (bodyToken.Type == JTokenType.String) {
@@ -141,31 +141,33 @@ namespace SampleFunctionsApp
                         byte[] data = Convert.FromBase64String(bodyToken.Value<string>());
                         string decodedString = Encoding.UTF8.GetString(data);
                         // log.LogError($"decoded: {decodedString}");
-                        eventToken = (JsonConvert.DeserializeObject<JObject>(decodedString))["event"];
+                        payloadToken = (JsonConvert.DeserializeObject<JObject>(decodedString));
                     } else
-                        eventToken = fullmsg["body"]["event"];
+                        payloadToken = fullmsg["body"];
                     } catch (Exception ex)
                     {
                         log.LogError($"Error parsing msg '${bodyToken.Value<string>()}' : ${ex.Message}");
                     }
 
-                    NerveGWEvent eventMsg = eventToken?.ToObject<NerveGWEvent>();
-                    if (eventMsg != null)
+                    NerveGWEventPayload payload = payloadToken?.ToObject<NerveGWEventPayload>();
+                    
+                    if (payload != null)
                     {
-                        NerveGWEventPayload payload = JsonConvert.DeserializeObject<NerveGWEventPayload>(eventMsg.Payload);
-                        if (payload != null)
-                        {
-                            DigitalTwinsClient client = CreateADTClient(log);
+                        DigitalTwinsClient client = CreateADTClient(log);
 
-                            doUpdateTwinPropertyWithValue(client, payload.Variables.MachineError.ToString(), "MachineError", log);
-                            doUpdateTwinPropertyWithValue(client, payload.Variables.MachinePause.ToString(), "MachinePause", log);
-                            doUpdateTwinPropertyWithValue(client, payload.Variables.MachineStarted.ToString(), "MachineStarted", log);
-                            doUpdateTwinPropertyWithValue(client, payload.Variables.MeasuredDiameter.ToString(), "MeasuredDiameter", log);
-                            doUpdateTwinPropertyWithValue(client, payload.Variables.MeasuredHoleDiameter.ToString(), "MeasuredHoleDiameter", log);
-                            doUpdateTwinPropertyWithValue(client, payload.Variables.MeasuredLength.ToString(), "MeasuredLength", log);
-                            doUpdateTwinPropertyWithValue(client, payload.Variables.SerialNumber.ToString(), "SerialNumber", log);
-                            doUpdateTwinPropertyWithValue(client, payload.Variables.SpindlePower.ToString(), "SpindlePower", log);
-                        }
+                        doUpdateTwinPropertyWithValue(client, payload.Variables.MachineError.ToString(), "MachineError", log);
+                        doUpdateTwinPropertyWithValue(client, payload.Variables.MachinePause.ToString(), "MachinePause", log);
+                        doUpdateTwinPropertyWithValue(client, payload.Variables.MachineStarted.ToString(), "MachineStarted", log);
+                        doUpdateTwinPropertyWithValue(client, payload.Variables.MeasuredDiameter.ToString(), "MeasuredDiameter", log);
+                        doUpdateTwinPropertyWithValue(client, payload.Variables.MeasuredHoleDiameter.ToString(), "MeasuredHoleDiameter", log);
+                        doUpdateTwinPropertyWithValue(client, payload.Variables.MeasuredLength.ToString(), "MeasuredLength", log);
+                        doUpdateTwinPropertyWithValue(client, payload.Variables.SerialNumber.ToString(), "SerialNumber", log);
+                        doUpdateTwinPropertyWithValue(client, payload.Variables.SpindlePower.ToString(), "SpindlePower", log);
+                    } else {
+                        if (payloadToken == null)
+                            log.LogWarning("Could not read payload token from body");
+                        else if (payload == null)
+                            log.LogWarning($"Could not ready payload object from token '${payloadToken.Value<string>()}'");
                     }
                 }
             }
